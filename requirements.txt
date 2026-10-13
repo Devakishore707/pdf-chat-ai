@@ -1,0 +1,8 @@
+# Web application
+streamlit
+
+# PDF text extraction
+PyMuPDF
+
+# Automated testing
+pytest
