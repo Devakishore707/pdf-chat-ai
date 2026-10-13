@@ -1,6 +1,9 @@
 
 import streamlit as st
 
+from pdf_chat.pdf.extractor import extract_pages
+
+
 def main():
     """Display the PDF Chat AI application."""
     st.set_page_config(
@@ -10,7 +13,7 @@ def main():
     )
 
     st.title("PDF Chat AI")
-    st.write("Upload a PDF to prepare it for question answering.")
+    st.write("Upload a PDF to extract its text.")
 
     uploaded_file = st.file_uploader(
         "Choose a PDF document",
@@ -19,14 +22,29 @@ def main():
     )
 
     if uploaded_file is not None:
-        st.success("PDF selected successfully.")
-        st.write("**Filename:**", uploaded_file.name)
-        st.write("**File size:**", f"{uploaded_file.size:,} bytes")
+        st.success(f"Selected: {uploaded_file.name}")
 
-        st.info(
-            "PDF text extraction and AI question answering "
-            "will be connected next."
-        )
+        try:
+            pages = extract_pages(uploaded_file.getvalue())
+
+            if not any(page["text"].strip() for page in pages):
+                st.warning(
+                    "No selectable text was found. "
+                    "This PDF may contain scanned images."
+                )
+            else:
+                st.success(
+                    f"Successfully processed {len(pages)} pages."
+                )
+
+                for page in pages:
+                    with st.expander(
+                        f"Page {page['page_number']}"
+                    ):
+                        st.text(page["text"] or "No text on this page.")
+
+        except ValueError as error:
+            st.error(str(error))
 
 
 if __name__ == "__main__":
