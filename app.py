@@ -10,7 +10,7 @@ def main():
         layout="wide",
     )
 
-    st.title("PDF Chat AI")
+    st.title("PDF Chat AI — Cloud Test")
     st.write(
         "Ask questions about your PDF documents. "
         "Document processing and AI features are coming next."
