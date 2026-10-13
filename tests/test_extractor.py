@@ -2,7 +2,7 @@
 import fitz
 import pytest
 
-from src.pdf_chat.pdf.extractor import extract_pages
+from pdf_chat.pdf.extractor import extract_pages
 
 
 def create_test_pdf() -> bytes:
